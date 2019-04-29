@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <!-- <meta content="maximum-dpr=2" name="flexible" /> -->
+    <title>miniC-index-<%=title%></title>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.2/??flexible_css.js,flexible.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+    <style>
+        .app {
+            min-height: 100vh;
+            /* background: #e8e8e8; */
+            width: 100vw;
+            box-sizing: border-box;
+            padding-top: 1.2rem;
+            margin-bottom: -1.2rem;
+            background: url('https://cn.bing.com/th?id=OHR.BabySloth_EN-CN8629808442_540x900.jpg&rf=LaDigue_1920x1080.jpg&pid=hp') no-repeat center transparent;
+            background-size: cover;
+        }
+
+        .search-top {
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 1.2rem;
+            /* margin:0 auto; */
+        }
+
+        .search-top input {
+            height: .8rem;
+            box-sizing: border-box;
+            width: 60%;
+            border: none;
+            box-sizing: border-box;
+            padding: .2rem;
+        }
+
+        .search-top button {
+            border: none;
+            height: .8rem;
+            width: 13%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: normal;
+            background: url(/public/image/search.png) no-repeat center #efefef;
+            background-size: 50% auto;
+        }
+
+        .search-list {
+            width: 100vw;
+        }
+
+        #list {
+            width: 8rem;
+            margin: 0 auto;
+            margin-top: 2.5vh;
+            padding-bottom: .5rem;
+        }
+
+        #list li {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: .4rem;
+            background: #fff;
+            padding: .2rem .5rem;
+            border-radius: .1rem;
+        }
+
+        #list h4 {
+            font-size: .2rem;
+            font-weight: bold;
+        }
+
+        #list img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: .1rem;
+            margin-right: .2rem;
+        }
+
+        #page {
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 1.6rem;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            color: #fff;
+        }
+
+        #page li {
+            border: 1px skyblue solid;
+            display: flex;
+            height: .46rem;
+            min-width: .46rem;
+            max-width: .7rem;
+            line-height: normal;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            color: #666;
+            margin-left: .2rem;
+        }
+
+        #page li.cur,
+        #page li:active {
+            background: skyblue;
+            color: #fff;
+        }
+
+        #msg {
+            text-align: center;
+            margin-top: .5rem;
+            color: #666;
+            display: none;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="search-top">
+            <input type="text" id="keys" placeholder="请输入小程序名">
+            <button id="goSearch"></button>
+        </div>
+        <div class="search-list">
+            <div id="msg">没有找到你想要的小程序</div>
+            <ul id="list"></ul>
+            <ul id="page">
+            </ul>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var page = 1,
+                page_size = 30;
+            $('#goSearch').click(() => {
+                page = 1
+                getSearchResult()
+            })
+            $(document).on('click', '#page > li', function () {
+                if ($(this).hasClass('cur')) {
+
+                } else {
+                    $('#page > li').removeClass('cur')
+                    page = $(this).attr('data-index')
+                    $('#page > li').eq(page).addClass('cur')
+                    getSearchResult()
+                }
+            })
+
+            function getSearchResult() {
+                var name = $('#keys').val()
+                $('#msg').hide()
+                $.ajax({
+                    url: '//10.66.51.134:7001/search',
+                    type: 'GET',
+                    data: {
+                        name,
+                        page,
+                        page_size
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        console.log('data', res)
+                        if (res.code == 10000) {
+                            if (res.data.total) {
+                                var html = ''
+                                res.data.list.map((item) => {
+                                    html += `<li>
+                                            <div class="left"><img src="${item.qrcode}"></div>
+                                            <div class="right">
+                                                <h4>${item.name}</h4>
+                                                <p>${item.description}</p>
+                                            </div>
+                                        </li>`
+                                })
+                                var curpage = res.data.page + 1
+                                var total = res.data.total
+                                var pages = Math.ceil(res.data.total / page_size)
+                                var pagesHtml = `共 ${total} 条搜索结果`
+                                for (let i = 0; i < pages; i++) {
+                                    pagesHtml += `
+                                   <li class="${curpage==(i+1)?'cur':''}" data-index="${i+1}">${i+1}</li>
+                                `
+                                }
+                                $('#page').html(pagesHtml)
+                                // $('#page')
+                                $('#list').html(html)
+                            } else {
+                                $('#list').html('')
+                                $('#page').html('')
+                                $('#msg').show()
+                            }
+                        }
+                    },
+                    error: (error) => {
+                        console.log('err', error)
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>
