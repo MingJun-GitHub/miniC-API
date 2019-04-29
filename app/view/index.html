@@ -15,12 +15,12 @@
     <style>
         .app {
             min-height: 100vh;
-            /* background: #e8e8e8; */
+            background: #e8e8e8;
             width: 100vw;
             box-sizing: border-box;
             padding-top: 1.2rem;
             margin-bottom: -1.2rem;
-            background: url('https://cn.bing.com/th?id=OHR.BabySloth_EN-CN8629808442_540x900.jpg&rf=LaDigue_1920x1080.jpg&pid=hp') no-repeat center transparent;
+            /* background: url('https://cn.bing.com/th?id=OHR.BabySloth_EN-CN8629808442_540x900.jpg&rf=LaDigue_1920x1080.jpg&pid=hp') no-repeat center transparent; */
             background-size: cover;
         }
 
@@ -67,11 +67,18 @@
         }
 
         #list li {
+            width: 100%;
+            background: #fff;
+        }
+
+        #list a {
+            display: block;
+
             display: flex;
             justify-content: flex-start;
             align-items: center;
             margin-top: .4rem;
-            background: #fff;
+
             padding: .2rem .5rem;
             border-radius: .1rem;
         }
@@ -180,11 +187,13 @@
                                 var html = ''
                                 res.data.list.map((item) => {
                                     html += `<li>
-                                            <div class="left"><img src="${item.qrcode}"></div>
-                                            <div class="right">
-                                                <h4>${item.name}</h4>
-                                                <p>${item.description}</p>
-                                            </div>
+                                            <a href="/details?id=${item.id}">
+                                                <div class="left"><img src="${item.qrcode}"></div>
+                                                <div class="right">
+                                                    <h4>${item.name}</h4>
+                                                    <p>${item.description}</p>
+                                                </div>
+                                            </a>    
                                         </li>`
                                 })
                                 var curpage = res.data.page + 1

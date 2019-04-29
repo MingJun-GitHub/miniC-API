@@ -14,6 +14,7 @@ class DetailsService extends Service {
         var res = await this.app.mysql.get('details', {
             id
         })
+        console.log('res', res)
         if (res) {
             res = await this.dealData(res)
         }

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <!-- <meta content="maximum-dpr=2" name="flexible" /> -->
+    <title>miniC-index</title>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.2/??flexible_css.js,flexible.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+    <style>
+        .app {
+            min-height: 100vh;
+            /* background: #e8e8e8; */
+            width: 100vw;
+            box-sizing: border-box;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: .4rem;
+        }
+
+        .top img {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: .5rem;
+            border-radius: .2rem;
+        }
+
+        .top .right {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top .title {
+            font-size: .4rem;
+        }
+
+        .tag {
+            margin: .2rem auto .3rem;
+        }
+
+        .tag li {
+            display: inline-flex;
+            background: #efefef;
+            color: #666;
+            border: 1px solid #666;
+            justify-content: center;
+            align-items: center;
+            padding: 0 .2rem;
+        }
+
+        .cmtitle {
+            font-size: .4rem;
+            padding: .2rem .4rem;
+        }
+
+        .describe, .info{
+            font-size: .38rem;
+            line-height: 1.2;
+            color: #333;
+            padding: 0 .4rem;
+        }
+
+
+        .screenshot {
+            width: 100%;
+            overflow-y: hidden;
+            overflow-x: scroll;
+            white-space: nowrap;
+            display: block;
+            word-break: keep-all;
+            -webkit-overflow-scrolling: touch;
+            height: 7.4rem;
+        }
+
+        .screenshot div {
+            width: 4rem;
+            height: auto;
+            /* margin-right: .4rem; */
+            margin-left: .4rem;
+            display: inline-block !important;
+        }
+        .screenshot div:last-child{
+            margin-right: .4rem;
+        }
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .qrcode {
+            text-align: center;
+            padding: .4rem 0 1.4rem;
+            color: #999;
+        }
+
+        .qrcode img {
+            width: 3.6rem;
+            height: auto;
+            margin-bottom: .2rem;
+        }
+
+        .btn {
+            background: skyblue;
+            color: #fff;
+            display: inline-flex;
+            padding: .1rem .1rem;
+            text-align: center;
+            margin-left: .12rem;
+            justify-content: center;
+            width: 1.8rem;
+        }
+        .info{
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="details">
+            <div class="top">
+                <div class="left"><img src="<%=icon%>" alt=""></div>
+                <div class="right">
+                    <div class="desc">
+                        <div class="title"><%=name%></div>
+                        <div class="tag">
+                            <ul>
+                                <% for(var i =0; i < tag.length; i++){%>
+                                <li><%=tag[i].name%></li>
+                                <% }%>
+                            </ul>
+                        </div>
+                        <div class="visit">浏览量：<%=visit_amount%>
+                        </div>
+                    </div>
+                    <div class="btn">保存二唯码</div>
+                </div>
+            </div>
+            <div class="cmtitle">介绍</div>
+            <div class="describe"><%=description%></div>
+            <div class="cmtitle">应用截图</div>
+            <div class="screenshot">
+                <%for(var i =0; i < screenshot.length; i++){%>
+                <div>
+                    <img src="<%=screenshot[i]%>">
+                </div>
+                <%}%>
+            </div>
+            <div class="cmtitle"><%=name%>使用指南</div>
+            <div class="info">
+                1.复制小程序名称, 至微信最新版本客户端（6.3.5版本以上）小程序入口, 进行搜索
+                2.长按保存图片到手机，再长按识别二唯码打开
+            </div>
+            <div class="qrcode">
+                <img src="<%=qrcode%>" alt="">
+                <p>长按二维码识别</p>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+</body>
+
+</html>

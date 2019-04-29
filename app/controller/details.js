@@ -16,12 +16,15 @@ class DetailsController extends Controller {
       id
     } = ctx.query;
     const data = await this.service.details.getDetailsById(id)
-    ctx.status = 200;
-    this.ctx.body = {
-      code: data ? 10000 : 10001,
-      data,
-      msg: data ? 'success' : 'error'
-    }
+    
+    // ctx.status = 200;
+    // this.ctx.body = {
+    //   code: data ? 10000 : 10001,
+    //   data,
+    //   msg: data ? 'success' : 'error'
+    // }
+    
+    await this.ctx.render('details.html', data)
   }
   async search() {
     const {
@@ -55,7 +58,6 @@ class DetailsController extends Controller {
       page,
       page_size
     } = ctx.query;
-    console.log('name', name, page, page_size)
     const data = await this.service.details.getDetailsByName(name, page, page_size)
     ctx.status = 200
     this.ctx.body = {

@@ -8,6 +8,13 @@ class IndexController extends Controller {
             title: '活动首页'
         })
     }
+    /*
+    async detals() {
+        await this.ctx.render('details', {
+            title: '详情页'
+        })
+    }
+    */
 }
 
 module.exports = IndexController;
